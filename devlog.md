@@ -52,3 +52,21 @@ Now that the shared variables are in place, I need a way to print output in the 
 ### Plan for this session
 
 Add the `log()` function and a `print_lock` to make sure print statements from different threads don't overlap.
+
+---
+
+## 2026-04-16 — Session 3: Teller Thread
+
+### Thoughts so far
+
+The teller is the more complex of the two threads. It needs to wait at the bank open barrier, then loop serving customers until all 50 are done. For withdrawals it has to acquire the manager lock before the safe. The order of semaphore operations has to match exactly what the customer will expect on the other side.
+
+### Plan for this session
+
+Implement the `teller()` function. The teller will:
+- Wait at the barrier until all tellers and main are ready
+- Signal it is free and wait for a customer to arrive
+- Ask for and receive the transaction type
+- Handle manager permission if withdrawal
+- Enter the safe, perform the transaction, then signal the customer
+- Repeat until shutdown signal is received
