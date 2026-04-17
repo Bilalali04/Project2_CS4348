@@ -70,3 +70,21 @@ Implement the `teller()` function. The teller will:
 - Handle manager permission if withdrawal
 - Enter the safe, perform the transaction, then signal the customer
 - Repeat until shutdown signal is received
+
+---
+
+## 2026-04-16 — Session 4: Customer Thread
+
+### Thoughts so far
+
+The customer thread mirrors the teller. Each semaphore signal the customer sends must match what the teller is waiting on. The customer decides its transaction before going to the bank, waits a random time, then enters through the door and gets in line.
+
+### Plan for this session
+
+Implement the `customer()` function. The customer will:
+- Randomly pick deposit or withdrawal
+- Sleep 0-100ms then enter through the door
+- Wait for a free teller using teller_available
+- Introduce itself and wait for the teller to ask for the transaction
+- Tell the teller the transaction type
+- Wait for the transaction to complete then leave
